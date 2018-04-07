@@ -10,6 +10,8 @@ function! TabsGrep(search)
 	call filter(tabs, function('s:MatchString', [a:search]))
 	echo tabs
 
+	call s:FilterTabPageElements(tabs)
+
 	" let filtered_tabs = system(
 	" 	\ 'echo '
 	" 	\ . shellescape(tabs_output)
@@ -23,6 +25,49 @@ endfunction
 function! s:MatchString(search, index, value)
 	return match(a:value, a:search) != -1 ||
 		\ match(a:value, '\vTab page \d+') != -1
+endfunction
+
+function! s:IsTabPageLine(line)
+	return match(a:line, '\vTab page \d+') != -1
+endfunction
+
+function! s:FilterTabPageElements(list)
+	" Has matches:
+	" [0, 1, 1, 0, 0]
+	"
+	" Tab page line indexes:
+	" [1, 2, 4, 6, 7, 8]
+	"
+	" Tab page line indexes with matches:
+	" [2, 4]
+
+	let tab_page_indexes = []
+
+	for i in range(len(a:list))
+		if s:IsTabPageLine(a:list[i])
+			call add(tab_page_indexes, i)
+		endif
+	endfor
+
+	echo tab_page_indexes
+
+	" loop 1..-1
+	" if l[i-1] == l[i] - 1
+	" delete l[i-1]
+	" if last l == len l - 1
+	" delete last l
+
+	let filtered_tab_page_indexes = copy(tab_page_indexes)
+
+	for i in range(1, len(tab_page_indexes) - 1)
+		if tab_page_indexes[i - 1] == tab_page_indexes[i] - 1
+			call remove(filtered_tab_page_indexes, i - 1)
+		endif
+	endfor
+
+	if filtered_tab_page_indexes[-1] == len(a:list) - 1
+		call remove(filtered_tab_page_indexes, -1)
+	endif
 endfunction
 
 command! -nargs=1 TabsGrep :call TabsGrep(<f-args>)

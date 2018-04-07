@@ -10,7 +10,10 @@ function! TabsGrep(search)
 	call filter(tabs, function('s:MatchString', [a:search]))
 	echo tabs
 
-	echo s:FilterTabPageElements(tabs)
+	let tabs = s:FilterTabPageElements(tabs)
+	for line in tabs
+		echo line
+	endfor
 
 	" let filtered_tabs = system(
 	" 	\ 'echo '

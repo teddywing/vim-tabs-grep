@@ -4,8 +4,9 @@ function! TabsGrep(search)
 	silent tabs
 	redir END
 
-	let tabs = split(tabs_output)
+	let tabs = split(tabs_output, '\n')
 
+	echo tabs
 	call filter(tabs, function('s:MatchString', [a:search]))
 	echo tabs
 

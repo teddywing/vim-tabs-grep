@@ -16,7 +16,7 @@ endfunction
 
 function! s:MatchString(search, index, value)
 	return match(a:value, a:search) != -1 ||
-		\ match(a:value, '\vTab page \d+') != -1
+		\ s:IsTabPageLine(a:value)
 endfunction
 
 function! s:IsTabPageLine(line)

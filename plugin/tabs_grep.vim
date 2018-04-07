@@ -10,7 +10,7 @@ function! TabsGrep(search)
 	call filter(tabs, function('s:MatchString', [a:search]))
 	echo tabs
 
-	call s:FilterTabPageElements(tabs)
+	echo s:FilterTabPageElements(tabs)
 
 	" let filtered_tabs = system(
 	" 	\ 'echo '
@@ -57,17 +57,23 @@ function! s:FilterTabPageElements(list)
 	" if last l == len l - 1
 	" delete last l
 
-	let filtered_tab_page_indexes = copy(tab_page_indexes)
+	let tab_page_indexes_to_remove = []
 
 	for i in range(1, len(tab_page_indexes) - 1)
 		if tab_page_indexes[i - 1] == tab_page_indexes[i] - 1
-			call remove(filtered_tab_page_indexes, i - 1)
+			call add(tab_page_indexes_to_remove, tab_page_indexes[i - 1])
 		endif
 	endfor
 
-	if filtered_tab_page_indexes[-1] == len(a:list) - 1
-		call remove(filtered_tab_page_indexes, -1)
+	if tab_page_indexes[-1] == len(a:list) - 1
+		call add(tab_page_indexes_to_remove, tab_page_indexes[-1])
 	endif
+
+	for i in reverse(tab_page_indexes_to_remove)
+		call remove(a:list, i)
+	endfor
+
+	return a:list
 endfunction
 
 command! -nargs=1 TabsGrep :call TabsGrep(<f-args>)

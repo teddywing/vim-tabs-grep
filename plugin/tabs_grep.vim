@@ -32,43 +32,36 @@ function! s:IsTabPageLine(line)
 endfunction
 
 function! s:FilterTabPageElements(list)
-	" Has matches:
-	" [0, 1, 1, 0, 0]
-	"
-	" Tab page line indexes:
-	" [1, 2, 4, 6, 7, 8]
-	"
-	" Tab page line indexes with matches:
-	" [2, 4]
-
 	let tab_page_indexes = []
 
+	" Get a list of the indexes of "Tab page X" elements.
 	for i in range(len(a:list))
 		if s:IsTabPageLine(a:list[i])
 			call add(tab_page_indexes, i)
 		endif
 	endfor
 
-	echo tab_page_indexes
-
-	" loop 1..-1
-	" if l[i-1] == l[i] - 1
-	" delete l[i-1]
-	" if last l == len l - 1
-	" delete last l
-
 	let tab_page_indexes_to_remove = []
 
+	" For indexes in the middle of the list, if `2` is just before `3`, it
+	" means that `2` didn't have any files under it (otherwise `3` would
+	" instead be `4` or higher).
 	for i in range(1, len(tab_page_indexes) - 1)
 		if tab_page_indexes[i - 1] == tab_page_indexes[i] - 1
 			call add(tab_page_indexes_to_remove, tab_page_indexes[i - 1])
 		endif
 	endfor
 
+	" For the last index in the list, if it's equal to the last possible
+	" index in `a:list`, it's a tab page without children. The last tab page
+	" index should never be at the end.
 	if tab_page_indexes[-1] == len(a:list) - 1
 		call add(tab_page_indexes_to_remove, tab_page_indexes[-1])
 	endif
 
+	" Remove empty "Tab page X" elements from the `:tabs` list. Reverse the
+	" list of indexes to delete from right to left, ensuring we always use
+	" valid indexes.
 	for i in reverse(tab_page_indexes_to_remove)
 		call remove(a:list, i)
 	endfor

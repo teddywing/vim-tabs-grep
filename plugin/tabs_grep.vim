@@ -12,15 +12,6 @@ function! TabsGrep(search)
 	for line in tabs
 		echo line
 	endfor
-
-	" let filtered_tabs = system(
-	" 	\ 'echo '
-	" 	\ . shellescape(tabs_output)
-	" 	\ . " | grep -i "
-	" 	\ . shellescape(a:search)
-	" \ )
-    "
-	" echo filtered_tabs
 endfunction
 
 function! s:MatchString(search, index, value)

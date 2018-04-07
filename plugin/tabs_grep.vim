@@ -6,9 +6,7 @@ function! TabsGrep(search)
 
 	let tabs = split(tabs_output, '\n')
 
-	echo tabs
 	call filter(tabs, function('s:MatchString', [a:search]))
-	echo tabs
 
 	let tabs = s:FilterTabPageElements(tabs)
 	for line in tabs

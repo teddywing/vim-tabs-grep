@@ -9,9 +9,8 @@ function! TabsGrep(search)
 	call filter(tabs, function('s:MatchString', [a:search]))
 
 	let tabs = s:FilterTabPageElements(tabs)
-	for line in tabs
-		echo line
-	endfor
+
+	call s:EchoTabs(tabs)
 endfunction
 
 function! s:MatchString(search, index, value)
@@ -59,6 +58,18 @@ function! s:FilterTabPageElements(list)
 	endfor
 
 	return a:list
+endfunction
+
+function! s:EchoTabs(tab_list)
+	for line in a:tab_list
+		if s:IsTabPageLine(line)
+			echohl Title
+			echo line
+			echohl None
+		else
+			echo line
+		endif
+	endfor
 endfunction
 
 command! -nargs=1 TabsGrep :call TabsGrep(<f-args>)

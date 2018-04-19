@@ -3,9 +3,12 @@ function! tabs_grep#TabsGrep(search)
 	silent tabs
 	redir END
 
+	" Slice to get rid of `^$` delimiters
+	let pattern = glob2regpat(a:search)[1:-2]
+
 	let tabs = split(tabs_output, '\n')
 
-	call filter(tabs, function('s:MatchString', [a:search]))
+	call filter(tabs, function('s:MatchString', [pattern]))
 
 	let tabs = s:FilterTabPageElements(tabs)
 

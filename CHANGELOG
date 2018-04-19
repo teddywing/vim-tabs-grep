@@ -1,5 +1,10 @@
 CHANGELOG
 =========
 
+v1.0.0 (2018-04-19):
+	Changes:
+
+	* The command now takes a glob instead of a regex pattern.
+
 v0.0.1 (2018-04-08):
 	Initial release.

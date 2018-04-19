@@ -2,7 +2,7 @@
 
 Author:  Teddy Wing <http://teddywing.com>
 License: GPLv3+
-Version: 0.0.1
+Version: 1.0.0
 
 ==============================================================================
 INTRODUCTION                                                       *tabs_grep*

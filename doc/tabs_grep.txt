@@ -7,18 +7,19 @@ Version: 0.0.1
 ==============================================================================
 INTRODUCTION                                                       *tabs_grep*
 
-TabsGrep filters the output of |:tabs| using a given search |pattern|. This
-makes it easier to find out which tab a file is on.
+TabsGrep filters the output of |:tabs| using a given search glob. This makes
+it easier to find out which tab a file is on.
 
 ==============================================================================
 COMMANDS                                                  *tabs_grep-commands*
 
 						*TabsGrep*
-:TabsGrep {pattern}
-		Output |:tabs| filtered by {pattern} using |match()|.
+:TabsGrep {glob}
+		Output |:tabs| filtered by {glob}.
 		Example: >
-		    :TabsGrep \V.vim
-<		This shows a list of tabs and file names containing ".vim".
+		    :TabsGrep tabs*vim
+<		This shows a list of tabs with file names containing
+		"*tabs*vim*".
 
 ==============================================================================
 LICENSE                                                    *tabs_grep-license*
